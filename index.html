@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Turn a CSV into clear insights. Explore data quality, patterns and evaluated predictions entirely in your browser.">
+<meta name="theme-color" content="#173e35"><title>Tablewise | Make sense of your data</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<aside class="sidebar">
+<a class="brand" href="./" aria-label="Tablewise home"><svg viewBox="0 0 30 30" fill="none" aria-hidden="true"><rect x="2" y="2" width="26" height="26" rx="7" stroke="currentColor" stroke-width="2"/><path d="M3 11h24M12 11v16M20 11v16" stroke="currentColor" stroke-width="2"/></svg><span>tablewise<span class="brand-dot">.</span></span></a>
+<div class="workspace-label">YOUR WORKSPACE</div>
+<nav id="navigation" aria-label="Workspace"></nav>
+<div class="side-bottom"><div class="privacy-mark" aria-hidden="true">⌁</div><strong>Your data stays yours.</strong><p>Files are processed in your browser. No uploads. No accounts needed for analysis.</p><button class="text-button" id="how-button">How it works <span aria-hidden="true">↗</span></button><div class="side-footer">A little clarity, in every column.</div></div>
+</aside>
+<div class="shell">
+<header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Overview</strong></div><span class="local-status"><i></i> Running locally in your browser</span><button id="help-button" class="icon-button" aria-label="About Tablewise">?</button></header>
+<main id="main" tabindex="-1">
+<div class="page-heading"><div><div class="eyebrow">LESS GUESSWORK. MORE UNDERSTANDING.</div><h1 id="page-title">Meet your data.</h1><p id="page-subtitle">A clearer picture, from the very first row.</p></div><div class="heading-actions"><button id="export-button" class="button secondary">Export report <span aria-hidden="true">↗</span></button><button id="upload-button" class="button primary"><span aria-hidden="true">＋</span> Open CSV</button></div></div>
+<div class="dataset-bar" id="dataset-bar"></div>
+<div id="status" role="status" aria-live="polite"></div>
+<div id="content"></div>
+<footer class="main-footer"><span>Built for curiosity. Designed for clarity.</span><span>Browser-local analysis <span aria-hidden="true">·</span> v1.0</span></footer>
+</main></div>
+<input type="file" id="file-input" accept=".csv,.tsv,text/csv,text/tab-separated-values" hidden>
+<dialog id="help-dialog"><button class="close-dialog icon-button" aria-label="Close help">×</button><div class="eyebrow">A GOOD PLACE TO START</div><h2>Your spreadsheet,<br>a little more understood.</h2><p>Open a CSV or TSV with a header row. Tablewise finds numeric, categorical and ISO date columns, then calculates summaries and charts.</p><ol><li><strong>Explore.</strong> Compare columns and look for patterns.</li><li><strong>Check.</strong> Review gaps, duplicate rows and unusual values.</li><li><strong>Predict.</strong> Choose an outcome and inputs. Train a small model and compare it with a simple baseline on held-out data.</li></ol><p>Up to 10 MB, 20,000 rows and 80 columns. Comma, semicolon and tab separators are detected automatically. Numbers use decimal points, with no currency symbols or thousands separators. Dates use YYYY-MM-DD.</p><p>Empty cells, NA, N/A, null and NaN are treated as missing. Original values are retained for the table and export. Analysis and models stay in memory; refreshing clears uploaded data. No third-party scripts or analytics are loaded.</p><p class="muted">Predictions are exploratory. Correlation does not establish cause. The sample is synthetic, not real customer data.</p><button class="button primary close-dialog">Got it</button></dialog>
+<script type="module" src="./app.js"></script>
+</body></html>
