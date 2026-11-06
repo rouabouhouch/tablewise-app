@@ -1,5 +1,5 @@
-import { LIMITS } from '../limits.js';
-import { parseCSV } from '../data/csv.js';
+import { LIMITS } from '../limits.js?v=6ee401bc68a87739';
+import { parseCSV } from '../data/csv.js?v=6ee401bc68a87739';
 
 export async function readDataset(file) {
   if (file.size > LIMITS.bytes) throw new Error('Choose a CSV under 10 MB.');

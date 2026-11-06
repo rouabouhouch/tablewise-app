@@ -1,6 +1,6 @@
-import { mean, standardDeviation } from '../data/statistics.js';
-import { parseNumber } from '../data/values.js';
-import { solveLinearSystem } from './algebra.js';
+import { mean, standardDeviation } from '../data/statistics.js?v=6ee401bc68a87739';
+import { parseNumber } from '../data/values.js?v=6ee401bc68a87739';
+import { solveLinearSystem } from './algebra.js?v=6ee401bc68a87739';
 
 function fit(design, targets) {
   const width = design[0].length;

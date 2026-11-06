@@ -1,6 +1,6 @@
-import { profile } from '../data/profile.js';
-import { strongestCorrelation } from '../data/statistics.js';
-import { inputColumns, targetColumns } from '../ml/columns.js';
+import { profile } from '../data/profile.js?v=6ee401bc68a87739';
+import { strongestCorrelation } from '../data/statistics.js?v=6ee401bc68a87739';
+import { inputColumns, targetColumns } from '../ml/columns.js?v=6ee401bc68a87739';
 
 export function defaultFeatures(columns, target) {
   return inputColumns(columns, target).slice(0, 8).map(column => column.index);

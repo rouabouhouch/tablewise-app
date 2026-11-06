@@ -1,10 +1,10 @@
-import { html } from './html.js';
-import { icon, callout } from './components/common.js';
-import { overviewView } from './views/overview.js';
-import { exploreView } from './views/explore.js';
-import { qualityView } from './views/quality.js';
-import { predictView } from './views/predict.js';
-import { tableView } from './views/data-table.js';
+import { html } from './html.js?v=6ee401bc68a87739';
+import { icon, callout } from './components/common.js?v=6ee401bc68a87739';
+import { overviewView } from './views/overview.js?v=6ee401bc68a87739';
+import { exploreView } from './views/explore.js?v=6ee401bc68a87739';
+import { qualityView } from './views/quality.js?v=6ee401bc68a87739';
+import { predictView } from './views/predict.js?v=6ee401bc68a87739';
+import { tableView } from './views/data-table.js?v=6ee401bc68a87739';
 
 const screens = {
   overview: { label: 'Overview', title: 'Meet your data.', subtitle: 'A clearer picture, from the very first row.', view: overviewView },

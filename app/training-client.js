@@ -4,7 +4,7 @@ export class TrainingClient {
   #worker = null;
   #createWorker;
 
-  constructor(createWorker = () => new Worker(new URL('../worker.js', import.meta.url), { type: 'module' })) {
+  constructor(createWorker = () => new Worker(new URL('../worker.js?v=6ee401bc68a87739', import.meta.url), { type: 'module' })) {
     this.#createWorker = createWorker;
   }
 

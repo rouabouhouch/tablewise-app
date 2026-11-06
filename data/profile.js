@@ -1,5 +1,5 @@
-import { frequencies, isMissing, parseDate, parseNumber } from './values.js';
-import { mean, quantile, standardDeviation } from './statistics.js';
+import { frequencies, isMissing, parseDate, parseNumber } from './values.js?v=6ee401bc68a87739';
+import { mean, quantile, standardDeviation } from './statistics.js?v=6ee401bc68a87739';
 
 function inferType(present, numeric) {
   if (!present.length) return 'empty';

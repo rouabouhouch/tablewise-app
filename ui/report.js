@@ -1,4 +1,4 @@
-import { html, formatNumber } from './html.js';
+import { html, formatNumber } from './html.js?v=6ee401bc68a87739';
 
 const reportStyles = `
   body { font: 15px/1.7 system-ui; max-width: 1000px; margin: 50px auto; padding: 0 24px; color: #233a33; }

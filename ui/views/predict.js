@@ -1,7 +1,7 @@
-import { inputColumns, targetColumns } from '../../ml/columns.js';
-import { html } from '../html.js';
-import { callout, columnChoices, emptyState, panelTitle, selectField } from '../components/common.js';
-import { modelResults } from './model-results.js';
+import { inputColumns, targetColumns } from '../../ml/columns.js?v=6ee401bc68a87739';
+import { html } from '../html.js?v=6ee401bc68a87739';
+import { callout, columnChoices, emptyState, panelTitle, selectField } from '../components/common.js?v=6ee401bc68a87739';
+import { modelResults } from './model-results.js?v=6ee401bc68a87739';
 
 const taskChoices = [
   { value: 'auto', label: 'Auto-detect' }, { value: 'regression', label: 'Number (regression)' },

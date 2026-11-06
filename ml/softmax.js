@@ -1,5 +1,5 @@
-import { mean } from '../data/statistics.js';
-import { dot } from './algebra.js';
+import { mean } from '../data/statistics.js?v=6ee401bc68a87739';
+import { dot } from './algebra.js?v=6ee401bc68a87739';
 
 const EPOCHS = 240;
 const PENALTY = 0.005;

@@ -1,10 +1,10 @@
-import { predict } from './inference.js';
-import { profile } from '../data/profile.js';
-import { trainingRequest } from './columns.js';
-import { partition } from './partition.js';
-import { encodeRow, featureWidth, fitEncoder } from './encoding.js';
-import { ridge } from './ridge.js';
-import { softmax } from './softmax.js';
+import { predict } from './inference.js?v=6ee401bc68a87739';
+import { profile } from '../data/profile.js?v=6ee401bc68a87739';
+import { trainingRequest } from './columns.js?v=6ee401bc68a87739';
+import { partition } from './partition.js?v=6ee401bc68a87739';
+import { encodeRow, featureWidth, fitEncoder } from './encoding.js?v=6ee401bc68a87739';
+import { ridge } from './ridge.js?v=6ee401bc68a87739';
+import { softmax } from './softmax.js?v=6ee401bc68a87739';
 
 // Each estimator operates only on encoded vectors. The pipeline owns the
 // split, training-only encoder and holdout used by both model and baseline.

@@ -1,5 +1,5 @@
-import { LIMITS } from '../limits.js';
-import { parseNumber } from './values.js';
+import { LIMITS } from '../limits.js?v=6ee401bc68a87739';
+import { parseNumber } from './values.js?v=6ee401bc68a87739';
 
 function detectDelimiter(text) {
   const counts = new Map([[',', 0], [';', 0], ['\t', 0]]);

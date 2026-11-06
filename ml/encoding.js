@@ -1,5 +1,5 @@
-import { frequencies, isMissing, parseNumber } from '../data/values.js';
-import { mean, quantile, standardDeviation } from '../data/statistics.js';
+import { frequencies, isMissing, parseNumber } from '../data/values.js?v=6ee401bc68a87739';
+import { mean, quantile, standardDeviation } from '../data/statistics.js?v=6ee401bc68a87739';
 
 const MAX_LEVELS = 14;
 const MAX_STANDARD_SCORE = 20;

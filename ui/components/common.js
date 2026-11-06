@@ -1,5 +1,5 @@
-import { html, formatNumber } from '../html.js';
-import { isMissing } from '../../data/values.js';
+import { html, formatNumber } from '../html.js?v=6ee401bc68a87739';
+import { isMissing } from '../../data/values.js?v=6ee401bc68a87739';
 
 const icons = {
   overview: 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',

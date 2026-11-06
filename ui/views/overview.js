@@ -1,6 +1,6 @@
-import { html, formatNumber as fmt, formatPercent as percent } from '../html.js';
-import { statCard, panelTitle, icon, barRows, rowTable } from '../components/common.js';
-import { histogramChart, categoryChart } from '../components/charts.js';
+import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=6ee401bc68a87739';
+import { statCard, panelTitle, icon, barRows, rowTable } from '../components/common.js?v=6ee401bc68a87739';
+import { histogramChart, categoryChart } from '../components/charts.js?v=6ee401bc68a87739';
 
 function insight(label, title, detail, destination, action) {
   return html`<article class="insight"><div class="insight-kicker">${label}</div><h3>${title}</h3>

@@ -1,6 +1,6 @@
-import { html, formatNumber as fmt, formatPercent as percent } from '../html.js';
-import { barRows, callout, panelTitle } from '../components/common.js';
-import { scatterChart } from '../components/charts.js';
+import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=6ee401bc68a87739';
+import { barRows, callout, panelTitle } from '../components/common.js?v=6ee401bc68a87739';
+import { scatterChart } from '../components/charts.js?v=6ee401bc68a87739';
 
 function metricCards(result) {
   const { metrics, baseline, model } = result;
