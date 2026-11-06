@@ -1,16 +1,13 @@
-import { predict } from './inference.js?v=6ee401bc68a87739';
-import { profile } from '../data/profile.js?v=6ee401bc68a87739';
-import { trainingRequest } from './columns.js?v=6ee401bc68a87739';
-import { partition } from './partition.js?v=6ee401bc68a87739';
-import { encodeRow, featureWidth, fitEncoder } from './encoding.js?v=6ee401bc68a87739';
-import { ridge } from './ridge.js?v=6ee401bc68a87739';
-import { softmax } from './softmax.js?v=6ee401bc68a87739';
-
-// Each estimator operates only on encoded vectors. The pipeline owns the
-// split, training-only encoder and holdout used by both model and baseline.
-const estimators = { regression: ridge, classification: softmax };
+import { predict } from './inference.js?v=1919cefb67302b76';
+import { profile, profileColumn } from '../data/profile.js?v=1919cefb67302b76';
+import { trainingRequest } from './columns.js?v=1919cefb67302b76';
+import { partition } from './partition.js?v=1919cefb67302b76';
+import { featureWidth } from './encoding.js?v=1919cefb67302b76';
+import { fitCandidate, linearCandidate, prepareTraining, tasks } from './candidates.js?v=1919cefb67302b76';
+import { compareOnTraining } from './selection.js?v=1919cefb67302b76';
 
 function coefficientMagnitudes(model) {
+  if (!model.weights) return [];
   const groups = model.task === 'regression' ? [model.weights] : model.weights;
   let offset = 1;
   const effects = model.specs.map(spec => {
@@ -25,29 +22,61 @@ function coefficientMagnitudes(model) {
   return effects.sort((left, right) => right.strength - left.strength);
 }
 
-export function train(dataset, options) {
-  const request = trainingRequest(profile(dataset).columns, options);
-  const { task, target, features, split } = request;
+function requestFor(dataset, options, compare) {
+  if (!compare) return trainingRequest(profile(dataset).columns, options);
+  // The user selects the schema and task before the split. Input types,
+  // imputation and category vocabularies are learned within each fit.
+  const columns = dataset.headers.map((name, index) => (
+    index === options.target ? profileColumn(name, index, dataset.rows) : { name, index }
+  ));
+  return trainingRequest(columns, options, { foldLocalInputs: true });
+}
+
+function selectAndRefit(comparison, frame) {
+  for (const candidate of comparison.leaderboard) {
+    if (candidate.score === null) continue;
+    try {
+      const model = fitCandidate(frame, candidate);
+      comparison.selectedId = candidate.id;
+      return model;
+    } catch (error) {
+      // Full training can exceed the encoding limit even though smaller folds fit.
+      // Try the next validation-ranked candidate without inspecting any test labels.
+      candidate.refitError = error.message;
+    }
+  }
+  throw new Error('No candidate could be fitted on the training rows.');
+}
+
+function runExperiment(dataset, options, compare) {
+  const request = requestFor(dataset, options, compare);
+  const { task, target, split } = request;
   const { training, testing, classes, available, excluded, duplicates, sampled } = partition(dataset.rows, request);
-  const estimator = estimators[task];
+  const comparison = compare ? compareOnTraining(training, request) : null;
+  const frame = prepareTraining(training, request, compare);
+  const model = compare
+    ? selectAndRefit(comparison, frame)
+    : fitCandidate(frame, linearCandidate(task));
+  if (!compare) {
+    // Keep the original fixed-fit API's serialized model shape.
+    delete model.algorithm;
+    delete model.parameters;
+  }
 
-  const specs = fitEncoder(training, features);
-  const design = training.map(row => encodeRow(row, specs));
-  const trainingLabels = training.map(row => estimator.label(row[target.index]));
-  const model = {
-    task, specs, classes, target: target.name, targetIndex: target.index,
-    ...estimator.fit(design, trainingLabels, classes),
-  };
-
-  const actual = testing.map(row => estimator.label(row[target.index]));
+  const actual = testing.map(row => tasks[task].label(row[target.index]));
   const predicted = testing.map(row => predict(model, row));
-  const baselineValue = estimator.baseline(trainingLabels, classes);
   return {
-    model,
-    metrics: estimator.metrics(actual, predicted, classes),
-    baseline: estimator.metrics(actual, actual.map(() => baselineValue), classes),
+    model, ...(comparison && { comparison }),
+    metrics: tasks[task].metrics(actual, predicted, classes),
+    baseline: tasks[task].metrics(actual, actual.map(() => frame.constant), classes),
     points: task === 'regression' ? actual.slice(0, 300).map((value, i) => [value, predicted[i]]) : undefined,
     effects: coefficientMagnitudes(model),
     trainCount: training.length, testCount: testing.length, available, excluded, duplicates, sampled, split,
   };
 }
+
+// Preserve the documented fixed-fit function for existing callers and saved models.
+export function train(dataset, options) { return runExperiment(dataset, options, false); }
+
+/** Compare candidate families and settings, refit the winner and evaluate it on the untouched test partition. */
+export function compareModels(dataset, options) { return runExperiment(dataset, options, true); }

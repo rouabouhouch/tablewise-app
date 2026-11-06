@@ -1,10 +1,9 @@
-import { mean } from '../data/statistics.js?v=6ee401bc68a87739';
-import { dot } from './algebra.js?v=6ee401bc68a87739';
+import { mean } from '../data/statistics.js?v=1919cefb67302b76';
+import { dot } from './algebra.js?v=1919cefb67302b76';
 
 const EPOCHS = 240;
-const PENALTY = 0.005;
 
-function fit(design, targets, classes) {
+function fit(design, targets, classes, penalty = 0.005) {
   const labels = targets.map(value => classes.indexOf(value));
   const width = design[0].length;
   const weights = classes.map(() => Array(width).fill(0));
@@ -24,7 +23,7 @@ function fit(design, targets, classes) {
     const rate = 0.2 / Math.sqrt(1 + epoch / 60);
     for (let label = 0; label < classes.length; label++) {
       for (let feature = 0; feature < width; feature++) {
-        const regularization = feature === 0 ? 0 : PENALTY * weights[label][feature];
+        const regularization = feature === 0 ? 0 : penalty * weights[label][feature];
         weights[label][feature] -= rate * (gradients[label][feature] / design.length + regularization);
       }
     }

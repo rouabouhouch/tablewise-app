@@ -1,6 +1,6 @@
-import { LIMITS } from '../limits.js?v=6ee401bc68a87739';
-import { isMissing, parseDate, parseNumber } from '../data/values.js?v=6ee401bc68a87739';
-import { shuffled } from '../data/random.js?v=6ee401bc68a87739';
+import { LIMITS } from '../limits.js?v=1919cefb67302b76';
+import { isMissing, parseDate, parseNumber } from '../data/values.js?v=1919cefb67302b76';
+import { shuffled } from '../data/random.js?v=1919cefb67302b76';
 
 function labelledRows(records, request) {
   const { task, target, features, split, date } = request;

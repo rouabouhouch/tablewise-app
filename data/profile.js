@@ -1,5 +1,5 @@
-import { frequencies, isMissing, parseDate, parseNumber } from './values.js?v=6ee401bc68a87739';
-import { mean, quantile, standardDeviation } from './statistics.js?v=6ee401bc68a87739';
+import { frequencies, isMissing, parseDate, parseNumber } from './values.js?v=1919cefb67302b76';
+import { mean, quantile, standardDeviation } from './statistics.js?v=1919cefb67302b76';
 
 function inferType(present, numeric) {
   if (!present.length) return 'empty';
@@ -21,7 +21,7 @@ function numericSummary(sorted) {
   };
 }
 
-function profileColumn(name, index, rows) {
+export function profileColumn(name, index, rows) {
   const present = rows.map(row => row[index]).filter(value => !isMissing(value));
   const numeric = present.map(parseNumber).filter(value => value !== null);
   const type = inferType(present, numeric);

@@ -1,7 +1,7 @@
-import { numericPairs, correlationOfPairs } from '../../data/statistics.js?v=6ee401bc68a87739';
-import { html, formatNumber as fmt } from '../html.js?v=6ee401bc68a87739';
-import { selectField, columnChoices, panelTitle, emptyState } from '../components/common.js?v=6ee401bc68a87739';
-import { histogramChart, scatterChart, categoryChart } from '../components/charts.js?v=6ee401bc68a87739';
+import { numericPairs, correlationOfPairs } from '../../data/statistics.js?v=1919cefb67302b76';
+import { html, formatNumber as fmt } from '../html.js?v=1919cefb67302b76';
+import { selectField, columnChoices, panelTitle, emptyState } from '../components/common.js?v=1919cefb67302b76';
+import { histogramChart, scatterChart, categoryChart } from '../components/charts.js?v=1919cefb67302b76';
 
 function distribution(rows, column) {
   const entries = [['Distinct values', fmt(column.unique, 0)], ['Missing cells', fmt(column.missing, 0)]];

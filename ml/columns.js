@@ -1,4 +1,4 @@
-import { LIMITS } from '../limits.js?v=6ee401bc68a87739';
+import { LIMITS } from '../limits.js?v=1919cefb67302b76';
 
 export function targetColumns(columns) {
   return columns.filter(column =>
@@ -14,7 +14,7 @@ export function inputColumns(columns, targetIndex) {
   });
 }
 
-export function trainingRequest(columns, options) {
+export function trainingRequest(columns, options, { foldLocalInputs = false } = {}) {
   const target = columns[options.target];
   if (!target) throw new Error('Choose a target column.');
 
@@ -25,11 +25,13 @@ export function trainingRequest(columns, options) {
 
   const selected = new Set(options.features);
   const features = columns.filter(column => selected.has(column.index) && column !== target &&
-    (column.type === 'number' || column.type === 'category'));
+    (foldLocalInputs || column.type === 'number' || column.type === 'category'));
   if (!features.length) throw new Error('Select at least one usable input column.');
   if (features.length > LIMITS.features) throw new Error('Choose 12 input columns or fewer.');
-  if (features.some(column => column.type === 'category' && column.unique > 50)) {
+  if (!foldLocalInputs && features.some(column => column.type === 'category' && column.unique > 50)) {
     throw new Error('Remove text or identifier columns with more than 50 distinct values.');
   }
-  return { task, target, features, split: options.split ?? 'random', date: options.date };
+  const split = options.split ?? 'random';
+  if (!['random', 'time'].includes(split)) throw new Error('Choose a supported evaluation split.');
+  return { task, target, features, split, date: options.date };
 }

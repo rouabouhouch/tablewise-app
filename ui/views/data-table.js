@@ -1,6 +1,6 @@
-import { parseNumber } from '../../data/values.js?v=6ee401bc68a87739';
-import { html, formatNumber } from '../html.js?v=6ee401bc68a87739';
-import { columnChoices, emptyState, rowTable, selectField } from '../components/common.js?v=6ee401bc68a87739';
+import { parseNumber } from '../../data/values.js?v=1919cefb67302b76';
+import { html, formatNumber } from '../html.js?v=1919cefb67302b76';
+import { columnChoices, emptyState, rowTable, selectField } from '../components/common.js?v=1919cefb67302b76';
 
 const PAGE_SIZE = 25;
 

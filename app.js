@@ -1,3 +1,3 @@
-import { mountTablewise } from './app/mount.js?v=6ee401bc68a87739';
+import { mountTablewise } from './app/mount.js?v=1919cefb67302b76';
 
 mountTablewise(document);

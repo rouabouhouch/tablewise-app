@@ -1,8 +1,8 @@
-import { train } from './ml/pipeline.js?v=6ee401bc68a87739';
+import { compareModels } from './ml/pipeline.js?v=1919cefb67302b76';
 
 self.onmessage = ({ data }) => {
   try {
-    self.postMessage({ result: train(data.dataset, data.options) });
+    self.postMessage({ result: compareModels(data.dataset, data.options) });
   } catch (error) {
     self.postMessage({ error: error.message });
   }

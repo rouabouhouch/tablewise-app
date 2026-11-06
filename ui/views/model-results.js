@@ -1,6 +1,7 @@
-import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=6ee401bc68a87739';
-import { barRows, callout, panelTitle } from '../components/common.js?v=6ee401bc68a87739';
-import { scatterChart } from '../components/charts.js?v=6ee401bc68a87739';
+import { comparisonTable, selectedCandidate } from '../components/comparison.js?v=1919cefb67302b76';
+import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=1919cefb67302b76';
+import { barRows, callout, panelTitle } from '../components/common.js?v=1919cefb67302b76';
+import { scatterChart } from '../components/charts.js?v=1919cefb67302b76';
 
 function metricCards(result) {
   const { metrics, baseline, model } = result;
@@ -35,8 +36,10 @@ function methodology(result) {
     <p>Preprocessing is fitted on training rows only. Numeric inputs use training medians for missing values and training scaling.
       Categories use up to 14 training levels plus an unknown/missing bucket. The baseline predicts ${baseline}.
       The model is evaluated on held-out records. ${result.excluded} rows without a usable outcome and ${result.duplicates} repeated input/outcome records were excluded. ${sampleDetail}</p>
-    <p>Ridge uses a penalty of 1. Softmax classification uses L2 penalty 0.005 and 240 gradient steps.
-      A single holdout can be noisy. Repeated entities, leakage and distribution shifts can inflate results.</p>
+    <p>${result.comparison
+      ? 'Candidate settings share the same folds. Each fold learns input types, imputation, scaling and category levels from its own training rows. Trees vary maximum depth. The penalty controls how strongly the linear model shrinks its coefficients. The selected setting is refitted before the final test.'
+      : 'The fixed fit uses a ridge penalty of 1 or logistic L2 penalty of 0.005.'}
+      Repeated entities, future information and distribution shifts can distort a score.</p>
   </details>`;
 }
 
@@ -56,29 +59,50 @@ export function predictionOutput(model, value) {
     <p class="chart-note">Exploratory estimate. Results may be unreliable outside the training data range.</p>`;
 }
 
+function modelDiagnostics(model, effects) {
+  if (model.algorithm === 'baseline') {
+    return html`<div><h3>Constant prediction</h3><p class="chart-note">Every new row receives the same training-set estimate.</p>
+      <strong>${model.task === 'regression' ? fmt(model.constant, 3) : model.constant}</strong></div>`;
+  }
+  if (model.algorithm === 'tree') {
+    return html`<div><h3>Fitted decision tree</h3><p class="chart-note">Depth limit ${model.parameters.maxDepth},
+      minimum ${model.parameters.minLeaf} training rows per leaf. The fitted tree reached depth ${model.depthUsed}
+      and has ${model.leaves} terminal predictions.</p></div>`;
+  }
+  return html`<div><h3>Model coefficient magnitude</h3>
+    <p class="chart-note">Magnitude depends on the model and its encoding. For categories, magnitudes sum the encoded coefficients.</p>
+    ${barRows(effects.map(effect => [effect.name, effect.strength]), effects[0]?.strength, value => fmt(value, 2))}</div>`;
+}
+
 export function modelResults(result) {
   const { model, metrics, baseline, effects } = result;
   const regression = model.task === 'regression';
   const better = regression ? metrics.mae < baseline.mae : metrics.macroF1 > baseline.macroF1;
   const plot = regression ? scatterChart(result.points, 'Observed', 'Predicted', true)
     : confusionMatrix(model.classes, metrics.matrix);
-  return html`<section class="panel spacer"><div class="panel-title">
-    <div><h3>${model.target} · ${regression ? 'Ridge regression' : 'Logistic classification'}</h3>
+  const selected = selectedCandidate(result.comparison);
+  const name = selected?.name ?? (regression ? 'Ridge regression' : 'Logistic classification');
+  const badge = model.algorithm === 'baseline' ? 'BASELINE SELECTED' : better ? 'BEATS BASELINE' : 'BASELINE IS AS GOOD OR BETTER';
+  return html`${result.comparison && html`<section class="panel spacer">${comparisonTable(result.comparison)}</section>`}
+  <section class="panel spacer"><div class="panel-title">
+    <div><h3>Final test · ${model.target}</h3>
+      <p>${name}${selected && ' · ' + selected.setting}</p>
       <p>${fmt(result.trainCount, 0)} training rows · ${fmt(result.testCount, 0)} held-out rows ·
         ${result.split === 'time' ? 'chronological' : 'seeded random'} split</p></div>
-    <span class="pill ${better ? '' : 'orange'}">${better ? 'BEATS BASELINE' : 'BASELINE IS AS GOOD OR BETTER'}</span>
+    <span class="pill ${better ? '' : 'orange'}">${badge}</span>
   </div>${metricCards(result)}
-  ${callout(better ? 'The model improved on the simple baseline for this split.'
-    : 'The simple baseline performed as well as or better than the model on the primary metric.', better ? '' : 'warning')}
+  ${callout(model.algorithm === 'baseline' ? 'The baseline ranked first on validation and is used for new predictions.'
+    : better ? 'The selected model also beat the baseline on the final test rows.'
+    : 'The baseline performed as well as or better on the final test. The validation choice is shown as originally selected.',
+      better || model.algorithm === 'baseline' ? '' : 'warning')}
   <div class="grid-two"><div><h3>${regression ? 'Predicted vs. observed' : 'Confusion matrix'}</h3>${plot}
     <p class="chart-note">${regression ? 'Up to 300 held-out rows. The dashed line marks a perfect prediction.'
       : 'Each cell counts held-out examples. Correct predictions lie on the diagonal.'}</p></div>
-    <div><h3>Model coefficient magnitude</h3>
-      <p class="chart-note">Magnitude depends on the model and its encoding. For categories, magnitudes sum the encoded coefficients.</p>
-      ${barRows(effects.map(effect => [effect.name, effect.strength]), effects[0]?.strength, value => fmt(value, 2))}
-    </div></div>${methodology(result)}</section>
+    ${modelDiagnostics(model, effects)}
+    </div>${methodology(result)}</section>
   <section class="panel spacer">
-    ${panelTitle('Make a prediction', 'Enter the inputs for one new observation. Empty numeric inputs use the training median.')}
+    ${panelTitle('Make a prediction', model.algorithm === 'baseline' ? 'The selected baseline gives the same estimate for any row.'
+      : 'Enter the inputs for one new observation. Empty numeric inputs use the training median.')}
     <form id="prediction-form"><div class="prediction-form">${model.specs.map(inputField)}</div>
       <button class="button primary spacer" type="submit">Predict ${model.target}</button></form>
     <div id="prediction-output" aria-live="polite"></div>

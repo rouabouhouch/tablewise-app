@@ -1,12 +1,12 @@
-import { csvText } from '../data/csv.js?v=6ee401bc68a87739';
-import { demoData } from '../data/sample.js?v=6ee401bc68a87739';
-import { predict } from '../ml/inference.js?v=6ee401bc68a87739';
-import { analysisReport } from '../ui/report.js?v=6ee401bc68a87739';
-import { createShell } from '../ui/shell.js?v=6ee401bc68a87739';
-import { predictionOutput } from '../ui/views/model-results.js?v=6ee401bc68a87739';
-import { readDataset, download } from './files.js?v=6ee401bc68a87739';
-import { TrainingClient } from './training-client.js?v=6ee401bc68a87739';
-import { createWorkspace, defaultFeatures } from './workspace.js?v=6ee401bc68a87739';
+import { csvText } from '../data/csv.js?v=1919cefb67302b76';
+import { demoData } from '../data/sample.js?v=1919cefb67302b76';
+import { predict } from '../ml/inference.js?v=1919cefb67302b76';
+import { analysisReport } from '../ui/report.js?v=1919cefb67302b76';
+import { createShell } from '../ui/shell.js?v=1919cefb67302b76';
+import { predictionOutput } from '../ui/views/model-results.js?v=1919cefb67302b76';
+import { readDataset, download } from './files.js?v=1919cefb67302b76';
+import { TrainingClient } from './training-client.js?v=1919cefb67302b76';
+import { createWorkspace, defaultFeatures } from './workspace.js?v=1919cefb67302b76';
 
 /** Mount one workspace. Listeners live on the shell so re-rendering adds none. */
 export function mountTablewise(root) {

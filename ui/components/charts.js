@@ -1,6 +1,6 @@
-import { histogram } from '../../data/statistics.js?v=6ee401bc68a87739';
-import { html, formatNumber } from '../html.js?v=6ee401bc68a87739';
-import { barRows, emptyState } from './common.js?v=6ee401bc68a87739';
+import { histogram } from '../../data/statistics.js?v=1919cefb67302b76';
+import { html, formatNumber } from '../html.js?v=1919cefb67302b76';
+import { barRows, emptyState } from './common.js?v=1919cefb67302b76';
 
 export function histogramChart(rows, column) {
   const bins = histogram(rows.map(row => row[column.index]));

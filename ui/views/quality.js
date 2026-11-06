@@ -1,5 +1,5 @@
-import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=6ee401bc68a87739';
-import { statCard, panelTitle, callout } from '../components/common.js?v=6ee401bc68a87739';
+import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=1919cefb67302b76';
+import { statCard, panelTitle, callout } from '../components/common.js?v=1919cefb67302b76';
 
 function columnCheck(column, rowCount) {
   const numeric = column.type === 'number';

@@ -1,8 +1,8 @@
-import { mean, standardDeviation } from '../data/statistics.js?v=6ee401bc68a87739';
-import { parseNumber } from '../data/values.js?v=6ee401bc68a87739';
-import { solveLinearSystem } from './algebra.js?v=6ee401bc68a87739';
+import { mean, standardDeviation } from '../data/statistics.js?v=1919cefb67302b76';
+import { parseNumber } from '../data/values.js?v=1919cefb67302b76';
+import { solveLinearSystem } from './algebra.js?v=1919cefb67302b76';
 
-function fit(design, targets) {
+function fit(design, targets, classes, penalty = 1) {
   const width = design[0].length;
   const gram = Array.from({ length: width }, () => Array(width).fill(0));
   const response = Array(width).fill(0);
@@ -21,7 +21,7 @@ function fit(design, targets) {
   }
   // Apply L2 to features. Only a numerical stabilizer goes on the intercept.
   gram[0][0] += 1e-9;
-  for (let index = 1; index < width; index++) gram[index][index] += 1;
+  for (let index = 1; index < width; index++) gram[index][index] += penalty;
   return { weights: solveLinearSystem(gram, response), yMean, yScale };
 }
 

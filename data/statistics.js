@@ -1,4 +1,4 @@
-import { parseNumber } from './values.js?v=6ee401bc68a87739';
+import { parseNumber } from './values.js?v=1919cefb67302b76';
 
 export function mean(values) {
   return values.reduce((sum, value) => sum + value, 0) / values.length;

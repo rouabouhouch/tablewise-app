@@ -1,6 +1,6 @@
-import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=6ee401bc68a87739';
-import { statCard, panelTitle, icon, barRows, rowTable } from '../components/common.js?v=6ee401bc68a87739';
-import { histogramChart, categoryChart } from '../components/charts.js?v=6ee401bc68a87739';
+import { html, formatNumber as fmt, formatPercent as percent } from '../html.js?v=1919cefb67302b76';
+import { statCard, panelTitle, icon, barRows, rowTable } from '../components/common.js?v=1919cefb67302b76';
+import { histogramChart, categoryChart } from '../components/charts.js?v=1919cefb67302b76';
 
 function insight(label, title, detail, destination, action) {
   return html`<article class="insight"><div class="insight-kicker">${label}</div><h3>${title}</h3>
@@ -50,7 +50,7 @@ export function overviewView({ dataset, summary, explore, strongest }) {
       outliers ? `Across ${flagged.length} columns, some values fall outside the usual range. They could be valid observations or data issues.`
         : 'The IQR rule did not flag unusual numeric values.', 'quality', 'Review data quality')}
     ${insight('A NEXT STEP', 'Put a prediction to the test',
-      'Pick an outcome, select its inputs, and compare a trained model with a simple baseline.', 'predict', 'Try a model')}
+      'Choose an outcome, compare model families and settings, and check the winner on test rows.', 'predict', 'Try a model')}
   </div>
   <div class="section-heading"><h3>A peek at the rows</h3>
     <button class="text-button inline-action" data-go="data">View all ${fmt(summary.rows, 0)} rows ↗</button></div>

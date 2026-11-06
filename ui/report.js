@@ -1,4 +1,5 @@
-import { html, formatNumber } from './html.js?v=6ee401bc68a87739';
+import { comparisonTable, selectedCandidate } from './components/comparison.js?v=1919cefb67302b76';
+import { html, formatNumber } from './html.js?v=1919cefb67302b76';
 
 const reportStyles = `
   body { font: 15px/1.7 system-ui; max-width: 1000px; margin: 50px auto; padding: 0 24px; color: #233a33; }
@@ -12,7 +13,10 @@ function modelSection(result) {
     metrics: result.metrics, baseline: result.baseline, excludedRows: result.excluded,
     duplicateRecordsRemoved: result.duplicates, sampled: result.sampled, inputs: result.model.specs.map(spec => spec.name),
   };
-  return html`<h2>Model evaluation</h2>
+  const selected = selectedCandidate(result.comparison);
+  return html`${result.comparison && comparisonTable(result.comparison)}
+    <h2>Final test evaluation</h2>
+    ${selected && html`<p>Selected model: ${selected.name}. Settings: ${selected.setting}.</p>`}
     <p>Outcome: ${result.model.target}. ${result.model.task}. ${result.trainCount} training and
       ${result.testCount} held-out rows, ${result.split} split.</p>
     <pre>${JSON.stringify(details, null, 2)}</pre>
